@@ -8,17 +8,25 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FlightBookingTest {
 
-    WebDriver driver = new ChromeDriver();
+    
 
 
     @Test
     public void testThatResultsAppearForAOneWayJourney() {
-
+    	 //you need to set the path of the chrome driver before launching the browser
+        
         setDriverPath();
+        WebDriver driver = new ChromeDriver();
+        
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
+
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
         driver.findElement(By.id("OneWay")).click();
@@ -31,9 +39,9 @@ public class FlightBookingTest {
         waitFor(2000);
         List<WebElement> originOptions = driver.findElement(By.id("ui-id-1")).findElements(By.tagName("li"));
         originOptions.get(0).click();
-
-        driver.findElement(By.id("toTag")).clear();
-        driver.findElement(By.id("toTag")).sendKeys("Delhi");
+//id name for totag is written wrong its ToTag
+        driver.findElement(By.id("ToTag")).clear();
+        driver.findElement(By.id("ToTag")).sendKeys("Delhi");
 
         //wait for the auto complete options to appear for the destination
 
@@ -42,8 +50,11 @@ public class FlightBookingTest {
         List<WebElement> destinationOptions = driver.findElement(By.id("ui-id-2")).findElements(By.tagName("li"));
         destinationOptions.get(0).click();
 
-        driver.findElement(By.xpath("//*[@id='ui-datepicker-div']/div[1]/table/tbody/tr[3]/td[7]/a")).click();
-
+      //need to pass the date you wanted
+        Date d= new Date();//for current date
+        String date = "31/12/2017";//for the date you wanted to book
+    	driver.findElement(By.xpath("//*[@id='DepartDate']")).sendKeys(date);;
+    	 
         //all fields filled in. Now click on search
         driver.findElement(By.id("SearchBtn")).click();
 

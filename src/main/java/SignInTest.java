@@ -1,4 +1,8 @@
 import com.sun.javafx.PlatformUtil;
+
+import java.util.Iterator;
+import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,20 +11,41 @@ import org.testng.annotations.Test;
 
 public class SignInTest {
 
-    WebDriver driver = new ChromeDriver();
+    
 
     @Test
     public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
-
-        setDriverPath();
+      //you need to set the path of the chrome driver before launching the browser
+    
+       setDriverPath();
+    	
+        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 
         driver.findElement(By.linkText("Your trips")).click();
         driver.findElement(By.id("SignIn")).click();
+        // web driver cannot able to find out the element in the pop up
 
-        driver.findElement(By.id("signInButton")).click();
+        //you need to switch into opened pop up window
+        
+        String MainWindow=driver.getWindowHandle();		
+		
+        // To handle all new opened window.				
+            Set<String> s1=driver.getWindowHandles();		
+        Iterator<String> i1=s1.iterator();		
+        		
+        while(i1.hasNext())			
+        {		
+            String ChildWindow=i1.next();		
+            		
+            if(!MainWindow.equalsIgnoreCase(ChildWindow))			
+            {    		
+                 
+                    // Switching to Child window
+                    driver.switchTo().window(ChildWindow);	                                                                                                           
+                    driver.findElement(By.id("signInButton")).click();
 
         String errors1 = driver.findElement(By.id("errors1")).getText();
         Assert.assertTrue(errors1.contains("There were errors in your submission"));
