@@ -21,6 +21,7 @@ public class SignInTest {
     	
         WebDriver driver = new ChromeDriver();
 
+        
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 

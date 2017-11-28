@@ -18,6 +18,7 @@ public class HotelBookingTest {
     public void shouldBeAbleToSearchForHotels() {
     	//you need to set the path of the chrome driver before launching the browser
         
+    	
         setDriverPath();
         WebDriver driver = new ChromeDriver();
 
